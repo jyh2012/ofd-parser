@@ -505,6 +505,11 @@ class Page:
     def set_select_Content(self, content):
         self.__Content = content
 
+    def get_select_PageRes(self):
+        return self.__PageRes
+    def set_select_PageRes(self, res):
+        self.__PageRes = res
+
 
 class Pages:
     def __init__(self):

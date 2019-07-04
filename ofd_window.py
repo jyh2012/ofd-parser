@@ -47,8 +47,8 @@ class Ui_MainWindow(QMainWindow):
     def openFile(self):
         self.filePath,fileType = QFileDialog.getOpenFileName(self,'open OFD file','C:/','OFD file(*.ofd)')
         print('filepath: ' + self.filePath)
-        ofdParser = OfdParser(self.filePath)
-        print(1)
+        Ofd_Parser = OfdParser(self.filePath)
+        Ofd_Parser.Analysis_Of_OFD()
 
 
 

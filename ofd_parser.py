@@ -17,7 +17,7 @@ except ImportError:
 
 # docNS that have to be part of every ofd file
 FILE_DOC_NS = {'ofd': 'http://www.ofdspec.org/2016'}
-    
+
 
 class OfdParser:
     def __init__(self,filePath):
@@ -28,8 +28,8 @@ class OfdParser:
         self.Document = self.Parse_Document(self.OFD, self.ofd_temp_path)
         self.Pages = self.Parse_Pages(self.OFD, self.Document, self.ofd_temp_path)
         self.PublicRes = self.Parse_PublicRes(self.OFD, self.Document, self.ofd_temp_path)
-        self.DocumentRea = self.Parse_DocumentRes(self.OFD, self.Document, self.ofd_temp_path)
-    
+        self.DocumentRes = self.Parse_DocumentRes(self.OFD, self.Document, self.ofd_temp_path)
+
 
     def unZip(self, dir, ofd_name ,temp_path):
         file_name = os.path.splitext(ofd_name)[0]
@@ -349,7 +349,7 @@ class OfdParser:
                     font.set_ID(header[1])
                 if 'FontName' in header:
                     font.set_FontName(header[1])
-                if 'FamiltName' in header:
+                if 'FamilyName' in header:
                     font.set_select_FamilyName(header[1])
             for second_item in item:
                 if 'FontFile' in second_item.tag:
@@ -395,16 +395,53 @@ class OfdParser:
 
         return documentres
 
+    
+    def Analysis_Of_OFD(self):
+        #OFD
+        print('-' * 46)
+        print(' '*10 + '---Parsing OFD.xml---')
+        print('Versions: {}\nDocType: {}'.format(self.OFD.get_Version(), self.OFD.get_DocType()))
+        print('\n')
+        
+        #Document
+        print('-' * 46)
+        print(' '*10 + '---Parsing Document.xml---')
+        print(('MaxUnitID: {}').format(self.Document.get_CommonData().get_MaxUnitId()))
+        print('Length of Pages: {}'.format(self.Document.get_Pages().__len__()))
+        print('\n')
+        
+        #Pages
+        print('-' * 46)
+        print(' '*10 + '---Parsing Pages---')
+        for i in range(len(self.Pages)):
+            print(('Pages{}' + ' '*4 + 'PageID: {}' + ' '*4 + 'PageRes: {}').format\
+                (i+1, self.Pages[i].get_PageID(), 'None' if self.Pages[i].get_PageN().\
+                    get_select_PageRes() == '' else self.Pages[i].get_PageN().get_select_PageRes()))
+        
+        #Res
+        print('-' * 46)
+        print(' '*10 + '---Parsing Res---')
+        try:
+            for i in range(len(self.PublicRes.get_Fonts())):
+                print(('ID: {}' + ' '*4 + 'FontName: {}' + ' '*4 +'FamilyName: {}' + ' '*4 + 'FontFile: {}').format(\
+                    self.PublicRes.get_Fonts()[i].get_ID(), self.PublicRes.get_Fonts()[i].get_FontName(),\
+                        self.PublicRes.get_Fonts()[i].get_select_FamilyName(), self.PublicRes.get_Fonts()[i].get_select_FontFile()))
+        except:
+            print('No PublicRes')
+        print('\n')
+        try:
+            for i in range(len(self.DocumentRes.get_MultiMedias())):
+                print(('ID: {}' + ' '*4 + 'Type: {}' +' '*4 + 'MediaFile: {}' + ' '*4 + 'Format: {}').format(\
+                    self.DocumentRes.get_MultiMedias()[i].get_ID(), self.DocumentRes.get_MultiMedias()[i].get_Type(),\
+                        self.DocumentRes.get_MultiMedias()[i].get_MediaFile(), self.DocumentRes.get_MultiMedias()[i].get_select_Format()))
+        except:
+            print('No DocumentRes')
 
 def main():
     file_dir = 'C:\\Users\\jiayi\\Desktop\\ooxml\\文件识别.ofd'
     Ofd_Parser = OfdParser(file_dir)
-    print('a')
+    Ofd_Parser.Analysis_Of_OFD()
     
-        
-
-
-
 if __name__ == '__main__':
     main()
 
