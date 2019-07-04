@@ -437,11 +437,3 @@ class OfdParser:
         except:
             print('No DocumentRes')
 
-def main():
-    file_dir = 'C:\\Users\\jiayi\\Desktop\\ooxml\\文件识别.ofd'
-    Ofd_Parser = OfdParser(file_dir)
-    Ofd_Parser.Analysis_Of_OFD()
-    
-if __name__ == '__main__':
-    main()
-
