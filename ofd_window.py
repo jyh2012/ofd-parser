@@ -41,7 +41,7 @@ class Ui_MainWindow(QMainWindow):
 
         self.setCentralWidget(self.centralwidget)
         self.setGeometry(300, 50, 600, 650)
-        self.setWindowTitle('PyReader')
+        self.setWindowTitle('OFD Parser')
         self.show()
 
     def openFile(self):
